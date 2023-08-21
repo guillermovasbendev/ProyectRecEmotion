@@ -1,4 +1,4 @@
-# this is a example how read a image with the library  openCV
+# Este es un ejemplo de cómo leer una imagen con la biblioteca OpenCV.
 import cv2 as cv
 
 img =cv.imread("images/smiley.jpg")

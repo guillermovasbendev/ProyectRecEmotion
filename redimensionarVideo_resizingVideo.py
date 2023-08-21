@@ -1,40 +1,38 @@
-# the first part of the code defines a function to change the size
+# La primera parte del código define una función para cambiar el tamaño
 import cv2 as cv
 
+def redimensionarFotograma(fotograma, escala=0.75):
+    ancho = int(fotograma.shape[1] * escala)
+    alto = int(fotograma.shape[0] * escala)
+    dimensiones = (ancho, alto)
+    return cv.resize(fotograma, dimensiones, interpolation=cv.INTER_AREA)
 
+# La segunda parte del código captura y muestra los fotogramas
 
-def rescaleFrame(frame, scale=0.75):
-    width = int(frame.shape[1] * scale)
-    height = int(frame.shape[0] * scale)
-    dimensions = (width, height)
-    return cv.resize(frame, dimensions, interpolation=cv.INTER_AREA)
-
-# the second part of the code captures and displays the frames
-
-capture = cv.VideoCapture("videos/robot.mp4")
+captura = cv.VideoCapture("videos/robot.mp4")
 while True:
-    isTrue, frame = capture.read()
-    frame_resized = rescaleFrame(frame, scale=.2)
-    # its posible change the size add how parameter of before line
-   # frame_resized = rescaleFrame(frame, scale=.2) and change de number for minus scale
-    cv.imshow("video", frame)
-    cv.imshow("video Resized", frame_resized)
+    esCorrecto, fotograma = captura.read()
+    fotograma_redimensionado = redimensionarFotograma(fotograma, escala=0.2)
+    # es posible cambiar el tamaño agregando un parámetro a la línea anterior
+    # fotograma_redimensionado = redimensionarFotograma(fotograma, escala=0.2) y cambiar el número por una escala menor
+    cv.imshow("video", fotograma)
+    cv.imshow("video Redimensionado", fotograma_redimensionado)
 
-    if cv.waitKey(150) & 0xFF == ord("d"):#its posible change time of close the window, for the operative system believe the window not send answer
+    if cv.waitKey(150) & 0xFF == ord("d"):  # es posible cambiar el tiempo para cerrar la ventana, para que el sistema operativo crea que la ventana no responde
         break
 
-    # Check if the user clicked the close button on any of the windows
-    if cv.getWindowProperty("video", cv.WND_PROP_VISIBLE) < 1 or cv.getWindowProperty("video Resized", cv.WND_PROP_VISIBLE) < 1:
+    # Verifica si el usuario hizo clic en el botón de cierre en alguna de las ventanas
+    if cv.getWindowProperty("video", cv.WND_PROP_VISIBLE) < 1 or cv.getWindowProperty("video Redimensionado", cv.WND_PROP_VISIBLE) < 1:
         break
 
-capture.release()
+captura.release()
 cv.destroyAllWindows()
 
 cv.waitKey(0)
 
-# Note: Resizing the frames can affect the speed of the video,
-# as it requires additional processing time. The larger the video and
-# the more intensive the resizing, the greater the impact on speed. The
-# performance can also be influenced by the capabilities of the computer's
-# processor, as a faster processor with more cores can handle resizing
-# more efficiently, resulting in faster and smoother video playback.
+# Nota: Redimensionar los fotogramas puede afectar la velocidad del video,
+# ya que requiere tiempo de procesamiento adicional. Cuanto más grande sea el video y
+# más intensa sea la redimensión, mayor será el impacto en la velocidad. El
+# rendimiento también puede verse influenciado por las capacidades del procesador de la computadora,
+# ya que un procesador más rápido con más núcleos puede manejar la redimensión
+# de manera más eficiente, lo que resulta en una reproducción de video más rápida y fluida.
