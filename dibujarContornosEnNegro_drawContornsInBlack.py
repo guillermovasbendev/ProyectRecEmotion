@@ -21,15 +21,20 @@ cv.imshow("smile", img)
 
 #generamos imagen en blanco
 blank =np.zeros(img.shape, dtype="uint8")
-cv.imshow("blank", blank)
+cv.imshow("blank", blank) # no es necesario llamarla ya que no pinta nada solo mostrara el fondo negro para usar con la funcion mas adelante.
 
 #pasa la imagen a grises
 gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
 cv.imshow("En grises", gray)
 
 #pasa la imagen a blancos y negros para que hayan menos puntos que reconocer
-ret, thresh = cv.threshold( gray,125,255,cv.THRESH_BINARY ) #125 es el umbral
+ret, thresh = cv.threshold( gray,125,255,cv.THRESH_BINARY ) # descomentar adelante si en vez de gray se usa canny
+# 125 es el umbral
 cv.imshow("Thresh",thresh)
+
+# canny=cv.canny(img,125,175)
+# cv.imshow("Canny edges",canny)
+#estas tres lineas se descomentan si en la linea anterior numero 31 en vez de gray usamos canny
 
 #pixel por debajo de 125 esta reconocido como negro
 #pixel por encima de 125 esta reconocido como blanco
