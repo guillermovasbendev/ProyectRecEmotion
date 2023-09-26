@@ -18,6 +18,11 @@ cv.imshow("RGB",rgb)
 # es decir con los colores correctamente  
 plt.imshow(rgb)
 plt.show()
+# matplotlibtrae de nuevo la imagen a color (con coordenadas)
+
+# NO SE PUEDE CONVERTIR UNA IMAGEN EN ESCALA DE GRISES A HSB DE FORMA DIRECTA
+
+# DEBERIAS CONVERTIR DE ESCALA DE GRISES A BGR Y LUEGO A HSV
 
 
 cv.waitKey(0)
