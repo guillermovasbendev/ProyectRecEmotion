@@ -26,3 +26,6 @@ cv.waitKey(0)
 
 # Cierra todas las ventanas de imagen abiertas por OpenCV
 cv.destroyAllWindows()
+# en la terminal la primera tupla al final tiene 3 ya que se refiere a la imagen original que tiene bgr
+# Dimensiones de la imagen original: (720, 1280, 3)
+# las otras no tienen el tres, por que se asume que es 1 y uno se usa para la escala de grises
