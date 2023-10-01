@@ -15,7 +15,7 @@ blank=np.zeros(img.shape[:2], dtype="uint8")
 
 # En resumen, esta línea de código crea una imagen en blanco (blank) con el mismo tamaño que la imagen original img. La imagen en blanco se utiliza posteriormente para dibujar un círculo en ella.
 
-circle=cv.circle(blank,(img.shape[1]//2,img.shape[0]//2),100,255,-1)
+mask=cv.circle(blank,(img.shape[1]//2,img.shape[0]//2),100,255,-1)
 
 # circle: Esta es la variable en la que se almacena el resultado de la función cv.circle(). Después de ejecutar esta línea, circle contendrá la imagen blank con un círculo blanco dibujado en ella.
 
@@ -29,9 +29,9 @@ circle=cv.circle(blank,(img.shape[1]//2,img.shape[0]//2),100,255,-1)
 
 # -1: Este es el quinto argumento y especifica que el círculo se debe rellenar completamente. Si se establece en otro valor (por ejemplo, 1), solo se dibujaría el contorno del círculo, pero con -1, el círculo se rellena por completo.
 
-mask=cv.bitwise_and(img,img,mask=circle)
-cv.imshow("mascara",mask)
-# mask: Esto es una variable en la que se almacena el resultado de la operación bitwise_and. Después de ejecutar estas líneas, mask contendrá la imagen resultante después de aplicar la máscara circular al canal de intensidad en escala de grises.
+masked=cv.bitwise_and(img,img,mask=mask)
+cv.imshow("mascara",masked)
+# masked: Esto es una variable en la que se almacena el resultado de la operación bitwise_and. Después de ejecutar estas líneas, mask contendrá la imagen resultante después de aplicar la máscara circular al canal de intensidad en escala de grises.
 
 # cv.bitwise_and(): Esta es la función de OpenCV utilizada para realizar la operación bitwise AND (AND a nivel de bits).
 
@@ -39,7 +39,7 @@ cv.imshow("mascara",mask)
 
 # gray: Este es el segundo argumento y es el mismo que el primero. Ambos argumentos representan el canal de intensidad en escala de grises de la imagen. En resumen, estás aplicando la operación bitwise_and entre el canal de intensidad y sí mismo, lo que esencialmente no cambia nada en este paso.
 
-# mask=circle: Este es el tercer argumento y representa la máscara que se aplicará a la operación bitwise AND. En este caso, la máscara es un círculo blanco (como se creó previamente) que restringe la operación solo a la región del círculo.
+# mask=mask: Este es el tercer argumento y representa la máscara que se aplicará a la operación bitwise AND. En este caso, la máscara es un círculo blanco (como se creó previamente) que restringe la operación solo a la región del círculo.
 
 gray=cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 cv.imshow("perro en escala de grises", gray) # muestra la imagen en escala de grises
@@ -65,13 +65,13 @@ plt.ylabel("# de pixeles")#pone nombre al eje y del grafico
 
 colors=("b","g","r") # se crea una tupla llamada colors que contiene tres elementos: "b", "g" y "r". Estas letras representan los canales de color azul (Blue), verde (Green) y rojo (Red) de una imagen en color RGB
 for i, col in enumerate(colors):#Se inicia un bucle for que recorre cada elemento en la tupla colors. enumerate se utiliza para obtener tanto el valor (col, que representa "b", "g" o "r") como el índice (i, que representa 0, 1 o 2) de cada elemento en la tupla
-    hist=cv.calcHist([img],[i],None,[256],[0,256])
+    hist=cv.calcHist([img],[i],mask,[256],[0,256])
     
 # [img]: Se pasa la imagen original img como una lista, indicando que estamos interesados en calcular el histograma de este canal de color específico.
 
 # [i]: El valor de i representa el índice del canal de color actual (0 para azul, 1 para verde y 2 para rojo). Este argumento indica que estamos calculando el histograma para el canal de color correspondiente.
 
-# None: No se utiliza ninguna máscara en este caso, por lo que se especifica None.
+# mask: se usa la mascara
 
 # [256]: Se especifica que queremos dividir el rango de valores de intensidad en 256 contenedores (bins) para el histograma.
 
