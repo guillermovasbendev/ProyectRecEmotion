@@ -1,7 +1,7 @@
 import cv2 as cv
-# 
+#este clasificador es muy poco util para varios rostros, con varias fotos no funciono
 
-img=cv.imread("images/ayo.jpg")
+img=cv.imread("images/friends.jpg")
 cv.imshow("persona" ,img)
 
 gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY)
@@ -15,7 +15,8 @@ haar_cascade=cv.CascadeClassifier("haar_face.xml")
 
 # haar_cascade: Este es el nombre del objeto que has creado. Puedes utilizar este objeto para detectar caras en imágenes utilizando el clasificador Haar cargado desde el archivo XML.
 
-faces_rect=haar_cascade.detectMultiScale(gray,scaleFactor=1.1,minNeighbors=3)
+faces_rect=haar_cascade.detectMultiScale(gray,scaleFactor=1.1,minNeighbors=2) #la variacion de estos dos ultimos mejora la identificacion
+
 # La función detectMultiScale devuelve una lista de rectángulos (representados como tuplas de cuatro números: (x, y, ancho, alto)) que delimitan las áreas donde se detectaron las caras en la imagen.
 
 # gray: Esta es la imagen en escala de grises en la que se van a detectar las caras. Antes de pasar la imagen al clasificador, es común convertirla a escala de grises para reducir la complejidad y aumentar la eficiencia del proceso de detección facial.
