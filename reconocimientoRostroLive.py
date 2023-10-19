@@ -1,31 +1,48 @@
-import cv2 as cv
+import cv2
+import numpy as np
 
-# Cargar el clasificador en cascada Haar para la detección facial
-haar_cascade = cv.CascadeClassifier("haar_face.xml")
+#es necesario una maquina con buena resolucion para que el programa funcione
+#Yo use droidcam ya que mi camara tiene baja calidad
 
-# Inicializar la cámara
-cap = cv.VideoCapture(0)
+# Cargar el modelo entrenado
+modelFile = "res10_300x300_ssd_iter_140000.caffemodel"
+configFile = "deploy.prototxt"
+net = cv2.dnn.readNetFromCaffe(configFile, modelFile)
+
+# Iniciar la captura de video desde la cámara web integrada (0)
+cap = cv2.VideoCapture(1)  # Usar 0 para la cámara predeterminada
 
 while True:
-    # Leer un fotograma de la cámara
+    # Leer un fotograma del flujo de video
     ret, frame = cap.read()
 
-    # Convertir el fotograma a escala de grises
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    # Obtener el tamaño del fotograma
+    h, w = frame.shape[:2]
 
-    # Detectar rostros en el fotograma
-    faces_rect = haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+    # Preprocesar la imagen para la detección de caras
+    blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 1.0, (300, 300), [104, 117, 123], False, False)
 
-    # Dibujar rectángulos alrededor de los rostros detectados
-    for (x, y, w, h) in faces_rect:
-        cv.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), thickness=2)
+    # Detectar caras en el fotograma
+    net.setInput(blob)
+    detections = net.forward()
 
-    # Mostrar el fotograma con los rectángulos alrededor de los rostros detectados
-    cv.imshow("Detección de Rostros live", frame)
+    # Iterar detecciones y dibujar bounding box
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > 0.5:
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (x, y, x2, y2) = box.astype("int")
+            cv2.rectangle(frame, (x, y), (x2, y2), (0, 0, 255), 2)
 
-    # Esperar hasta que se presione cualquier tecla
-    cv.waitKey(0)
+    # Mostrar el fotograma resultante con las caras detectadas
+    cv2.imshow("Reconocimiento de Rostros en Vivo", frame)
 
-# Liberar la cámara y cerrar todas las ventanas
+    # Presiona 'q' para salir del bucle
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Liberar la captura de video y cerrar todas las ventanas
 cap.release()
-cv.destroyAllWindows()
+cv2.destroyAllWindows()
+
+
