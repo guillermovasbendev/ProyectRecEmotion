@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 
 #es necesario una maquina con buena resolucion para que el programa funcione
-#Yo use droidcam ya que mi camara tiene baja calidad
+#Yo use droidcam ya que mi camara tiene baja calidad, y este programa permite enlazar mi  telefono
+# movil al programa en el computador
 
 # Cargar el modelo entrenado
 modelFile = "res10_300x300_ssd_iter_140000.caffemodel"
